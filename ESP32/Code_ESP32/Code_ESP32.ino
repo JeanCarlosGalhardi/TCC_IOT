@@ -17,7 +17,7 @@ HC_SR04 sensor(PIN_TRIGGER, PIN_ECHO);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(PIN_BUZZER,     OUTPUT);
+  pinMode(PIN_BUZZER, OUTPUT);
   Serial.println("Inicializando dispositivo");
 }
 
