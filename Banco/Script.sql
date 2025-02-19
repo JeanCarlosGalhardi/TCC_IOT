@@ -1,3 +1,4 @@
+-- ALTERAÇÃO DA SENHA DO USUÁRIO DO BANCO
 ALTER USER postgres WITH PASSWORD '123456';
 
 -- CRIAÇÃO DO BANCO
@@ -9,8 +10,8 @@ create table sensor(
   descricao varchar(20) not null
 );
 
--- CADASTRO DO PRIMEIRO SENSOR
-insert into sensor (id_sensor, descricao) values(1, 'Sensor 1');
+-- CADASTRO DO SENSOR
+insert into sensor (id_sensor, descricao) values(1, 'Sensor Ultrassônico');
 
 -- CRIAÇÃO DA TABELA NIVEL
 create table nivel(
@@ -19,10 +20,14 @@ create table nivel(
   valor int not null  
 );
 
--- EXEMPLO DE INSERT
-insert into nivel (datahora, id_sensor, valor) values (now(), 1, 9);
-
--- EXEMPLO DE SELECT
-select to_char(datahora, 'dd/mm/yyyy hh24:mi'), id_sensor, valor from nivel;
-
-delete from nivel
+-- SELEÇÃO DOS DADOS
+SELECT 
+		n.id_sensor as "Código do Sensor", 
+		s.descricao as "Descrição do Sensor",
+		to_char(n.datahora, 'DD/MM/YYYY') as "Data", 
+		to_char(n.datahora, 'hh24:mi:ss') as "Hora", 
+		n.valor as "Nível" 
+FROM nivel n 
+inner join sensor s
+on s.id_sensor  = n.id_sensor 
+ORDER BY datahora;

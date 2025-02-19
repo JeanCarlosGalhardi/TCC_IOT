@@ -1,17 +1,14 @@
 // Biblioteca no Sensor
 #include "Ultrasonic.h"
-
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-
 const char* ssid = "Galhardi";
 const char* password = "G@lh@rd1";
-const char* serverUrl = "http://192.168.3.8/Web/insert_teste.php";
+const char* serverUrl = "http://192.168.3.6/Web/insert.php";
 
 // Intervalo entre as leituras
-#define INTERVALO 1000
-
+#define INTERVALO 5000
 // Definindo os pinos do Sensor
 #define PIN_TRIGGER 18
 #define PIN_ECHO 19
@@ -44,7 +41,7 @@ void desligaBuzzer(){
    digitalWrite(PIN_BUZZER,LOW);
 }
 
-void enviaDados(){
+void enviaDados(int distancia){
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(serverUrl);
@@ -52,7 +49,7 @@ void enviaDados(){
     // Criação do JSON
     StaticJsonDocument<200> jsonDoc;
     jsonDoc["id_sensor"] = 1; // Enviar como número
-    jsonDoc["valor"] = sensor.distance(); // Enviar como número
+    jsonDoc["valor"] = distancia; // Enviar como número
 
     String jsonString;
     serializeJson(jsonDoc, jsonString);
@@ -76,13 +73,16 @@ void enviaDados(){
 void loop() {
 distancia = sensor.distance();  
 
-  if (distancia < 5){
+  if (distancia < 5 and distancia > 0){
     ligarBuzzer();
   } else {
     desligaBuzzer();
   }
-
+  
   Serial.println(distancia);
-  enviaDados();
-  delay(INTERVALO);
+  if (distancia > 0) {
+    enviaDados(distancia);
+    delay(INTERVALO);
+  }
+ 
 }

@@ -15,7 +15,7 @@ if (!$conexao) {
 }
 
 // Definindo a consulta SQL
-$query = "SELECT to_char(datahora, 'dd/mm/yyyy hh24:mi') AS data_formatada, id_sensor, valor FROM nivel ORDER BY datahora LIMIT 72;";
+$query = "SELECT to_char(datahora, 'dd/mm/yyyy hh24:mi') AS data_formatada, id_sensor, valor FROM nivel ORDER BY datahora;";
 
 // Executando a consulta
 $resultado = pg_query($conexao, $query);
@@ -40,7 +40,7 @@ $dados = [
     'labels' => $labels,  // Labels dinâmicos baseados na data
     'datasets' => [[
         'label' => 'Centímetros',
-        'backgroundColor' => 'rgba(0, 0, 0, 0.1)',
+        'backgroundColor' => 'rgba(0, 0, 0, 0.2)',
         'borderColor' => 'rgba(75, 192, 192, 1)',
         'borderWidth' => 1,
         'data' => $dadosValores,  // Dados dos valores consultados
